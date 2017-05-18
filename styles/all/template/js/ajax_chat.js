@@ -96,7 +96,7 @@ function handle_send(mode, f)
 			var message = document.getElementById('message').value;
 			type = 'edit';
 			mode += '/' + f;
-			param = '&submit=1&message=' + message;
+			param = '&submit=1&message=' + encodeURIComponent(message);
 		} else if (mode === 'delete')
 		{
 			//var parent = document.getElementById('chat');
@@ -345,7 +345,10 @@ jQuery(function($) {
 		handle_send('edit', $chat_edit.find('input[name=chat_id]').val());
 	});
 
-	$('#chat').find('.username, .username-coloured').attr('title', chat_username_title);
+	if (typeof(chat_username_title) !== 'undefined')
+	{
+		$('#chat').find('.username, .username-coloured').attr('title', chat_username_title);
+	}
 
 	$('#chat').on('click', '.username, .username-coloured', function(e) {
 		e.preventDefault();
