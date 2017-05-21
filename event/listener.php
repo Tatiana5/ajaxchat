@@ -235,9 +235,13 @@ class listener implements EventSubscriberInterface
 	/**
 	 * Modifies the forum index to add the chat
 	 */
-	public function index()
+	public function index($event, $event_name)
 	{
-		if (!$this->auth->acl_get('u_ajaxchat_view'))
+		if (!$this->auth->acl_get('u_ajaxchat_view') ||
+			($event_name == 'core.index_modify_page_title' && !(bool) $this->user->data['user_ajax_chat_view']) ||
+			($event_name == 'core.viewforum_get_topic_data' && !(bool) $this->user->data['user_ajax_chat_viewforum']) ||
+			($event_name == 'core.viewtopic_before_f_read_check' && !(bool) $this->user->data['user_ajax_chat_viewtopic'])
+		)
 		{
 			return;
 		}
